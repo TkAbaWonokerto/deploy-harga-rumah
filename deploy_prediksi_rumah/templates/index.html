@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediksi Harga Rumah</title>
+    <script>
+        async function getPrediction() {
+            let luas = parseFloat(document.getElementById("luas").value);
+            let kamar = parseInt(document.getElementById("kamar").value);
+            let lokasi = parseInt(document.getElementById("lokasi").value);
+
+            let inputData = { data: [luas, kamar, lokasi] };
+
+            let response = await fetch('/predict', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(inputData)
+            });
+
+            let result = await response.json();
+            document.getElementById('output').innerText = 'Harga Prediksi: ' + result.prediction + ' juta';
+        }
+    </script>
+</head>
+<body>
+    <h2>Prediksi Harga Rumah</h2>
+    <label>Luas (m²):</label><input type="number" id="luas"><br>
+    <label>Kamar:</label><input type="number" id="kamar"><br>
+    <label>Lokasi (1=Kota, 2=Kecil, 3=Desa):</label><input type="number" id="lokasi"><br>
+    <button onclick="getPrediction()">Prediksi</button>
+    <p id="output"></p>
+</body>
+</html>
